@@ -1,0 +1,216 @@
+﻿@page
+@model AssignmentPRN221_TaskManagement.Pages.LoginModel
+@{
+    var usernameLogin = ViewData["usernameLogin"];
+    var passwordLogin = ViewData["passwordLogin"];
+    var MessLogin = ViewData["MessLogin"];
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="/script.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Login Page</title>
+    <!--css, js-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
+</head>
+
+<body style="background-color: white;">
+    <div class="container">
+        <div id="logreg-forms">
+
+            <form method="post" class="form-signin">
+                <p style="font-size: 30px;"> Sign-In</p>
+                <!--sign in-->
+                <label for="user" class="label">Username</label>
+                <input id="user" type="text" name="usernameLogin" placeholder="Username" pattern="^\S+$"
+                       value="@usernameLogin" class="form-control" required autofocus="">
+                <label for="pass" class="label">Password</label>
+                <input id="pass" type="password" name="passwordLogin" placeholder="Password" pattern="^\S+$"
+                       value="@passwordLogin" class="form-control" data-type="password" required autofocus="">
+                <br>
+
+                <h6 class="text-danger">@MessLogin</h6>
+
+                <button class="btn btn-secondary btn-block buttonSignIn" type="submit">
+                    <i class="fas fa-sign-in-alt"></i> Sign-In
+                </button>
+                <!--forgot-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <a style="font-size: 15px; text-align: left; color: #415a70"
+                           href="/Index">
+                            Back to Home Page <i class="fas fa-angle-right"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a style="font-size: 15px; text-align: right; color: #415a70"
+                           href="/Register">
+                            <i class="fas fa-angle-left"></i> Don't have an account?
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr>
+    </div>
+    <style>
+        body {
+            background-color: #F6FAFB;
+            font-family: "Amazon Ember", Arial, sans-serif;
+            background-image: url("../images/background_color.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        p {
+            font-family: "Amazon Ember", Arial, sans-serif;
+            color: #415a70;
+        }
+
+        .buttonSignIn {
+            font-size: 15px;
+            border-radius: 5px;
+            border-color: #DBDEE3;
+            color: #415a70;
+            height: 35px;
+            background: -moz-linear-gradient(top, #F5D68A 0%, #EFBB3B 100%);
+            background: -webkit-linear-gradient(top, #F5D68A 0%, #EFBB3B 100%);
+            background: -o-linear-gradient(top, #F5D68A 0%, #EFBB3B 100%);
+            background: linear-gradient(top, #F5D68A 0%, #EFBB3B 100%);
+        }
+
+        .buttonSignUp {
+            font-size: 15px;
+            border-radius: 5px;
+            border-color: #DBDEE3;
+            color: #415a70;
+            background: -moz-linear-gradient(top, #E6E9EF 0%, #DBDEE3 100%);
+            background: -webkit-linear-gradient(top, #E6E9EF 0%, #DBDEE3 100%);
+            background: -o-linear-gradient(top, #E6E9EF 0%, #DBDEE3 100%);
+            background: linear-gradient(top, #E6E9EF 0%, #DBDEE3 100%);
+        }
+
+        .googleButton {
+            font-size: 15px;
+            font-family: "Amazon Ember", Arial, sans-serif;
+        }
+
+        .facebookButton {
+            font-size: 15px;
+            font-family: "Amazon Ember", Arial, sans-serif;
+        }
+
+        /* sign in FORM */
+        #logreg-forms {
+            width: 412px;
+            margin: 10vh auto;
+            background-color: #FAFAFA;
+            box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.12), 1px 2px 5px rgba(0, 0, 0, 0.24);
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            border-radius: 5px;
+        }
+
+            #logreg-forms form {
+                width: 100%;
+                max-width: 410px;
+                padding: 15px;
+                margin: auto;
+            }
+
+            #logreg-forms .form-control {
+                position: relative;
+                box-sizing: border-box;
+                height: auto;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+                #logreg-forms .form-control:focus {
+                    z-index: 2;
+                }
+
+            #logreg-forms .form-signin input[type="email"] {
+                margin-bottom: -1px;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            #logreg-forms .form-signin input[type="password"] {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+
+            #logreg-forms .social-login {
+                width: 390px;
+                margin: 0 auto;
+                margin-bottom: 14px;
+            }
+
+            #logreg-forms .social-btn {
+                font-weight: 100;
+                width: 190px;
+                font-size: 0.9rem;
+            }
+
+            #logreg-forms a {
+                display: block;
+                padding-top: 10px;
+                color: lightseagreen;
+            }
+
+        #logreg-form .lines {
+            width: 200px;
+            border: 1px solid red;
+        }
+
+
+        #logreg-forms button[type="submit"] {
+            margin-top: 10px;
+        }
+
+        #logreg-forms .facebook-btn {
+            background-color: #3C589C;
+        }
+
+        #logreg-forms .google-btn {
+            background-color: #DF4B3B;
+        }
+
+        #logreg-forms .form-reset,
+        #logreg-forms .form-signup {
+            display: none;
+        }
+
+            #logreg-forms .form-signup .social-btn {
+                width: 210px;
+            }
+
+            #logreg-forms .form-signup input {
+                margin-bottom: 2px;
+            }
+
+        .form-signup .social-login {
+            width: 210px !important;
+            margin: 0 auto;
+        }
+    </style>
+</body>
+<p style="text-align:center">
+    By Hehe
+</p>
+
+</html>
