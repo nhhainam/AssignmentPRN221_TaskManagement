@@ -44,7 +44,9 @@ namespace AssignmentPRN221_TaskManagement.Pages.Groups
             context.SaveChanges();
 
 
-            var username = HttpContext.Session.GetString("username");
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claims = identity.Claims;
+            string username = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             User user = context.Users.SingleOrDefault(u => u.Username == username);
             Group group = context.Groups.SingleOrDefault(g => g.GroupId == int.Parse(groupid));
 

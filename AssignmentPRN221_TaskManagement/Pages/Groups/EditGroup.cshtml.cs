@@ -40,7 +40,9 @@ namespace AssignmentPRN221_TaskManagement.Pages.Groups
         public void OnPost(string grId, string groupname, string description, string purpose, string state)
         {
 
-            var username = HttpContext.Session.GetString("username");
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claims = identity.Claims;
+            string username = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             User curUser = context.Users.SingleOrDefault(u => u.Username == username);
             Group group = context.Groups.SingleOrDefault(g => g.GroupId == int.Parse(grId));
             ViewData["curUser"] = curUser;
