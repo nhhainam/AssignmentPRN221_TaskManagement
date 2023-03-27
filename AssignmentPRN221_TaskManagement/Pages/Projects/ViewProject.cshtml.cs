@@ -11,7 +11,7 @@ namespace AssignmentPRN221_TaskManagement.Pages.Projects
     public class ViewProjectModel : PageModel
     {
         GroupManagementContext context = new GroupManagementContext();
-        public void OnGet(string groupid)
+        public IActionResult OnGet(string groupid)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -19,15 +19,23 @@ namespace AssignmentPRN221_TaskManagement.Pages.Projects
 
             User user = context.Users.SingleOrDefault(u => u.Username == username && u.Status == true);
             Member member = context.Members.FirstOrDefault(m => m.UserId == user.UserId && m.Group.GroupId == int.Parse(groupid) && m.Status == true);
+
+            if (member == null)
+            {
+                return RedirectToPage("/AccessDenied");
+            }
+
             List<Project> projects = context.Projects.Include(p => p.Group.Members).Where(p => p.Group.Members.Contains(member) && p.GroupId == int.Parse(groupid) && p.Status == true).ToList();
             Group group = context.Groups.SingleOrDefault(g => g.GroupId == int.Parse(groupid));
 
             ViewData["group"] = group;
             ViewData["user"] = user;
             ViewData["projects"] = projects;
+
+            return Page();
         }
 
-        public void OnPostRemoveProject(string projectid, string groupid)
+        public IActionResult OnPostRemoveProject(string projectid, string groupid)
         {
             Project project = context.Projects.SingleOrDefault(p => p.ProjectId == int.Parse(projectid));
             project.Status = false;
@@ -43,12 +51,19 @@ namespace AssignmentPRN221_TaskManagement.Pages.Projects
 
             User user = context.Users.SingleOrDefault(u => u.Username == username && u.Status == true);
             Member member = context.Members.FirstOrDefault(m => m.UserId == user.UserId && m.Group.GroupId == int.Parse(groupid) && m.Status == true);
+
+            if (member == null)
+            {
+                return RedirectToPage("/AccessDenied");
+            }
             List<Project> projects = context.Projects.Include(p => p.Group.Members).Where(p => p.Group.Members.Contains(member) && p.GroupId == int.Parse(groupid) && p.Status == true).ToList();
             Group group = context.Groups.SingleOrDefault(g => g.GroupId == int.Parse(groupid));
 
             ViewData["group"] = group;
             ViewData["user"] = user;
             ViewData["projects"] = projects;
+
+            return Page();
         }
     }
 }

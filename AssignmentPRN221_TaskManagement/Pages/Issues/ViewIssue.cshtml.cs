@@ -13,7 +13,7 @@ namespace AssignmentPRN221_TaskManagement.Pages.Issues
     public class ViewIssueModel : PageModel
     {
         GroupManagementContext context = new GroupManagementContext();
-        public void OnGet(string projectid, string groupid)
+        public IActionResult OnGet(string projectid, string groupid)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -23,6 +23,11 @@ namespace AssignmentPRN221_TaskManagement.Pages.Issues
             Group group = context.Groups.SingleOrDefault(g => g.GroupId == int.Parse(groupid));
             Project project = context.Projects.SingleOrDefault(p => p.ProjectId == int.Parse(projectid));
 
+            if (member == null || project == null || project.GroupId != group.GroupId)
+            {
+                return RedirectToPage("/AccessDenied");
+            }
+
             List<Issue> issues = context.Issues.Include(i => i.Project).Where(i => i.ProjectId == int.Parse(projectid) && i.Status == true).ToList();
 
             ViewData["user"] = user;
@@ -30,9 +35,10 @@ namespace AssignmentPRN221_TaskManagement.Pages.Issues
             ViewData["group"] = group;
             ViewData["project"] = project;
             ViewData["issues"] = issues;
+            return Page();
         }
 
-        public void OnPostRemoveIssue(string projectid, string groupid, string issueid)
+        public IActionResult OnPostRemoveIssue(string projectid, string groupid, string issueid)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -45,6 +51,12 @@ namespace AssignmentPRN221_TaskManagement.Pages.Issues
             issue.Status = false;
             context.SaveChanges();
 
+
+            if (member == null || project == null || project.GroupId != group.GroupId)
+            {
+                return RedirectToPage("/AccessDenied");
+            }
+
             List<Issue> issues = context.Issues.Include(i => i.Project).Where(i => i.ProjectId == int.Parse(projectid) && i.Status == true).ToList();
 
             ViewData["user"] = user;
@@ -53,6 +65,7 @@ namespace AssignmentPRN221_TaskManagement.Pages.Issues
             ViewData["project"] = project;
             ViewData["issues"] = issues;
 
+            return Page();
         }
     }
 }
