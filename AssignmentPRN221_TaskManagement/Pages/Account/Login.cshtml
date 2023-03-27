@@ -1,6 +1,7 @@
 ﻿@page
 @model AssignmentPRN221_TaskManagement.Pages.LoginModel
 @{
+    Layout = null;
     var usernameLogin = ViewData["usernameLogin"];
     var passwordLogin = ViewData["passwordLogin"];
     var MessLogin = ViewData["MessLogin"];
@@ -52,7 +53,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <a style="font-size: 15px; text-align: left; color: #415a70"
-                           href="/Index">
+                           href="~/Index">
                             Back to Home Page <i class="fas fa-angle-right"></i>
                         </a>
                     </div>
