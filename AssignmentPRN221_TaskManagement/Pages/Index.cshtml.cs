@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AssignmentPRN221_TaskManagement.Pages
@@ -14,7 +15,10 @@ namespace AssignmentPRN221_TaskManagement.Pages
 
         public void OnGet()
         {
-
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/Account/Home");
+            }
         }
     }
 }
