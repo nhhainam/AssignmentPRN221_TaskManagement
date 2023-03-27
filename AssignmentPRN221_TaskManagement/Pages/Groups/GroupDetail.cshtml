@@ -1,12 +1,13 @@
 ﻿@page
-@model AssignmentPRN221_TaskManagement.Pages.Account.ViewInvitationModel
+@model AssignmentPRN221_TaskManagement.Pages.Groups.GroupDetailModel
 @using AssignmentPRN221_TaskManagement.DataAccess
 @{
     User user = (User)ViewData["user"];
+    Member usermember = (Member)ViewData["usermember"];
+    Group gr = (Group)ViewData["group"];
 
-    List<Member> invitations = (List<Member>)ViewData["invitations"];
+    List<Member> members = (List<Member>)ViewData["members"];
 
-    var MessInvite = ViewData["MessInvite"];
 }
 
 <!DOCTYPE html>
@@ -57,22 +58,22 @@
 
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="false" aria-controls="collapseUtilities">
+                   aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Invitation</span>
+                    <span>Groups</span>
                 </a>
                 <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/Home">View your groups</a>
+                        <a class="collapse-item active" href="/Home">View your groups</a>
                         <a class="collapse-item" href="/Groups/AddGroup">Create a group</a>
                     </div>
                 </div>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/Account/ViewInvitation">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Your invitation</span>
@@ -142,31 +143,40 @@
                             <!-- Circle Buttons -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">View Invitation</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">View Member</h6>
+                                    @if (null != usermember && usermember.RoleId == 1)
+                                    {
+                                        <a class="btn btn-info" style="text-decoration: none" asp-page="/Groups/InviteMember" asp-route-groupid="@gr.GroupId">Invite member</a>
+                                    }
                                 </div>
                                 <div class="card-body">
+
                                     <table id="table_id" class="table table-bordered text-center" style="width:100%;">
                                         <thead class="text-uppercase bg-gray-200">
                                             <tr>
-                                                <th style="width:60%;">Group name</th>
+                                                <th style="width:60%;">Member name</th>
                                                 <th style="width:20%;">Role</th>
-                                                <th style="width:20%;">Action</th>
+                                                <th style="width:20%;"></th>
+                                                <th style="width:20%;"></th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in invitations)
+                                            @foreach (var m in members)
                                             {
                                                 <tr>
-                                                    <td>@item.Group.GroupName</td>
-                                                    <td>@item.Role.RoleName</td>
-                                                    <td style="white-space:nowrap">
-                                                        <form method="post" asp-route-groupid="@item.Group.GroupId" asp-page-handler="AcceptInvitation">
-                                                            <button class="btn btn-success" type="submit" onclick="return confirm('Are you sure to accept?');">Accept</button>
-                                                        </form>
-                                                        <form method="post" asp-route-groupid="@item.Group.GroupId" asp-page-handler="RefuseInvitation">
-                                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to refuse?');">Refuse</button>
-                                                        </form>
-                                                    </td>
+                                                    <td>@m.User.Fullname</td>
+                                                    <td>@m.Role.RoleName</td>
+                                                    @if (m.RoleId != 1 && usermember.RoleId == 1)
+                                                    {
+
+                                                        <td><a class="btn btn-success" style="text-decoration: none" asp-area="" asp-page="/Groups/UpdateMember" asp-route-userid="@m.UserId" asp-route-groupid="@m.GroupId">Update</a></td>
+                                                        <td>
+                                                            <form method="post" asp-route-userid="@m.UserId" asp-route-groupid="@m.GroupId" asp-page-handler="RemoveMember">
+                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?');">Remove</button>
+                                                            </form>
+                                                        </td>
+                                                    }
                                                 </tr>
                                             }
                                         </tbody>
