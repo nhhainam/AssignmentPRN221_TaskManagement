@@ -37,7 +37,9 @@ namespace AssignmentPRN221_TaskManagement.Pages.Groups
 
         public void OnPost(string role, string userid, string groupid)
         {
-            var username = HttpContext.Session.GetString("username");
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claims = identity.Claims;
+            string username = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             User curUser = context.Users.SingleOrDefault(u => u.Username == username);
             User user = context.Users.SingleOrDefault(u => u.UserId == int.Parse(userid));
 
