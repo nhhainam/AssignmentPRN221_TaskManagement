@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AssignmentPRN221_TaskManagement.Pages.Account
 {
-    public class LogoutModel : PageModel
+    public class ViewInvitationModel : PageModel
     {
         public void OnGet()
         {
-            HttpContext.Session.Clear();
-            Response.Redirect("../Login");
         }
     }
 }
