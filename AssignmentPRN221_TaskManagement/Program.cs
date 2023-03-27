@@ -10,8 +10,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                   .AddCookie(options =>
                   {
-                      options.LoginPath = "~/Account/Login";
-                      options.AccessDeniedPath = "~/Account/AccessDenied";
+                      options.LoginPath = "/Account/Login";
+                      options.AccessDeniedPath = "/Account/AccessDenied";
                   });
 
 var app = builder.Build();
@@ -30,5 +30,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+});
 
 app.Run();

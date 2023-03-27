@@ -1,4 +1,5 @@
 using AssignmentPRN221_TaskManagement.DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AssignmentPRN221_TaskManagement.Pages.Account
 {
+    [Authorize]
     public class ViewInvitationModel : PageModel
     {
         GroupManagementContext context = new GroupManagementContext();
