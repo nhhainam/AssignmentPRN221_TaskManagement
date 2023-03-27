@@ -1,14 +1,14 @@
 ﻿@page
-@model AssignmentPRN221_TaskManagement.Pages.Account.ViewInvitationModel
 @using AssignmentPRN221_TaskManagement.DataAccess
-@using System.Security.Claims;
+@model AssignmentPRN221_TaskManagement.Pages.Groups.InviteMemberModel
+@using System.Security.Claims
 @{
     Layout = null;
-    User user = (User)ViewData["user"];
-    List<Member> invitations = (List<Member>)ViewData["invitations"];
+    User curUser = (User)ViewData["curUser"];
+    List<Role> roles = (List<Role>)ViewData["roles"];
+    Group gr = (Group)ViewData["group"];
     var MessInvite = ViewData["MessInvite"];
 }
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,22 +57,22 @@
 
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="false" aria-controls="collapseUtilities">
+                   aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Invitation</span>
+                    <span>Groups</span>
                 </a>
                 <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/Account/Home">View your groups</a>
+                        <a class="collapse-item active" href="/Account/Home">View your groups</a>
                         <a class="collapse-item" href="/Groups/AddGroup">Create a group</a>
                     </div>
                 </div>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/Account/ViewInvitation">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Your invitation</span>
@@ -142,35 +142,41 @@
                             <!-- Circle Buttons -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">View Invitation</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Invite Member</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table id="table_id" class="table table-bordered text-center" style="width:100%;">
-                                        <thead class="text-uppercase bg-gray-200">
+                                    <h6 class="text-danger">
+                                        @MessInvite
+                                    </h6>
+                                    <form method="post">
+                                        <table class="table">
                                             <tr>
-                                                <th style="width:60%;">Group name</th>
-                                                <th style="width:20%;">Role</th>
-                                                <th style="width:20%;">Action</th>
+                                                <td style="width: 30%;">User Name</td>
+                                                <td style="width: 70%;">
+                                                    <input type="text" name="username" placeholder="User name to invite" class="form-control" />
+                                                    @*<div class="invalid-feedback">
+                                                    Not blank and no space at beginning or ending
+                                                    </div>*@
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in invitations)
-                                            {
-                                                <tr>
-                                                    <td>@item.Group.GroupName</td>
-                                                    <td>@item.Role.RoleName</td>
-                                                    <td style="white-space:nowrap">
-                                                        <form method="post" asp-route-groupid="@item.Group.GroupId" asp-page-handler="AcceptInvitation">
-                                                            <button class="btn btn-success" type="submit" onclick="return confirm('Are you sure to accept?');">Accept</button>
-                                                        </form>
-                                                        <form method="post" asp-route-groupid="@item.Group.GroupId" asp-page-handler="RefuseInvitation">
-                                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to refuse?');">Refuse</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                            <tr>
+                                                <td>Role</td>
+                                                <td>
+                                                    <select name="role">
+                                                        @foreach (var item in roles)
+                                                        {
+                                                            <option value="@item.RoleId">@item.RoleName</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <input type="hidden" value="@gr.GroupId" name="groupid" />
+                                                <td><button type="submit" class=" btn btn-primary">Invite</button></td>
+                                            </tr>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
 
@@ -225,3 +231,4 @@
         $('#table_id').DataTable();
     });
 </script>
+

@@ -1,12 +1,15 @@
 ﻿@page
-@model AssignmentPRN221_TaskManagement.Pages.Account.ViewInvitationModel
+@model AssignmentPRN221_TaskManagement.Pages.Groups.UpdateMemberModel
 @using AssignmentPRN221_TaskManagement.DataAccess
-@using System.Security.Claims;
+@using System.Security.Claims
 @{
     Layout = null;
+    User curUser = (User)ViewData["curUser"];
     User user = (User)ViewData["user"];
-    List<Member> invitations = (List<Member>)ViewData["invitations"];
-    var MessInvite = ViewData["MessInvite"];
+    Member usermember = (Member)ViewData["usermember"];
+
+    List<Role> roles = (List<Role>)ViewData["roles"];
+
 }
 
 <!DOCTYPE html>
@@ -57,22 +60,22 @@
 
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="false" aria-controls="collapseUtilities">
+                   aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Invitation</span>
+                    <span>Groups</span>
                 </a>
                 <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/Account/Home">View your groups</a>
+                        <a class="collapse-item active" href="/Account/Home">View your groups</a>
                         <a class="collapse-item" href="/Groups/AddGroup">Create a group</a>
                     </div>
                 </div>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/Account/ViewInvitation">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Your invitation</span>
@@ -142,35 +145,43 @@
                             <!-- Circle Buttons -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">View Invitation</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">View Member</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table id="table_id" class="table table-bordered text-center" style="width:100%;">
-                                        <thead class="text-uppercase bg-gray-200">
+                                    <form method="post" class="form-signin">
+                                        <table class="table">
                                             <tr>
-                                                <th style="width:60%;">Group name</th>
-                                                <th style="width:20%;">Role</th>
-                                                <th style="width:20%;">Action</th>
+                                                <td style="width: 30%;">User Name</td>
+                                                <td style="width: 70%;">
+                                                    <input type="hidden" name="userid" value="@usermember.UserId">
+                                                    <input type="hidden" name="groupid" value="@usermember.GroupId">
+                                                    <input type="text" name="username" value="@User.FindFirst(ClaimTypes.Name)?.Value" class="form-control" readonly />
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in invitations)
-                                            {
-                                                <tr>
-                                                    <td>@item.Group.GroupName</td>
-                                                    <td>@item.Role.RoleName</td>
-                                                    <td style="white-space:nowrap">
-                                                        <form method="post" asp-route-groupid="@item.Group.GroupId" asp-page-handler="AcceptInvitation">
-                                                            <button class="btn btn-success" type="submit" onclick="return confirm('Are you sure to accept?');">Accept</button>
-                                                        </form>
-                                                        <form method="post" asp-route-groupid="@item.Group.GroupId" asp-page-handler="RefuseInvitation">
-                                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to refuse?');">Refuse</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                            <tr>
+                                                <td>Role</td>
+                                                <td>
+                                                    <select name="role">
+                                                        @foreach (var item in roles)
+                                                        {
+                                                            if (item.RoleId == usermember.RoleId)
+                                                            {
+                                                                        <option value="@item.RoleId" selected>@item.RoleName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                        <option value="@item.RoleId">@item.RoleName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td><button type="submit" class=" btn btn-primary">Update</button></td>
+                                            </tr>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
 
