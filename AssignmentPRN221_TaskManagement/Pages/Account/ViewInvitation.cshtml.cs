@@ -44,7 +44,7 @@ namespace AssignmentPRN221_TaskManagement.Pages.Account
             string username = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             User user = context.Users.SingleOrDefault(u => u.Username == username && u.Status == true);
             Member invitation = context.Members.FirstOrDefault(i => i.UserId == user.UserId && i.GroupId == int.Parse(groupid) && i.Status == true);
-            invitation.Status = false;
+            context.Remove(invitation);
             context.SaveChanges();
             List<Member> invitations = context.Members.Include(m => m.Group).Include(m => m.Role).Include(m => m.User).Where(m => m.UserId == user.UserId && m.State == 0 && m.Status == true).ToList();
 
