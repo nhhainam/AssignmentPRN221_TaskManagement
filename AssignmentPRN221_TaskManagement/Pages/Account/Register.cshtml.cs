@@ -10,9 +10,17 @@ namespace AssignmentPRN221_TaskManagement.Pages
         GroupManagementContext context = new GroupManagementContext();
         public void OnGet()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/Account/Home");
+            }
         }
         public void OnPost(string usernameRegis, string passwordRegis, string repasswordRegis, string fullnameRegis, string emailRegis)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/Account/Home");
+            }
             User user = context.Users.SingleOrDefault(u => u.Username == usernameRegis);
             if (user == null)
             {
@@ -24,7 +32,7 @@ namespace AssignmentPRN221_TaskManagement.Pages
                 user.Status = true;
                 context.Users.Add(user);
                 context.SaveChanges();
-                Response.Redirect("Index");
+                Response.Redirect("/Account/Login");
             }
             else
             {
