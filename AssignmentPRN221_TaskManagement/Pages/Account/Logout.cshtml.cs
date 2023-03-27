@@ -7,8 +7,6 @@ namespace AssignmentPRN221_TaskManagement.Pages.Account
     {
         public void OnGet()
         {
-            HttpContext.Session.Clear();
-            Response.Redirect("../Login");
         }
     }
 }
